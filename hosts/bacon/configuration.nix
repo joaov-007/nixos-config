@@ -15,6 +15,55 @@
     ./hardware-configuration.nix
   ];
 
+  # Use the systemd-boot EFI boot loader.
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
+
+  # Hide the OS choice for bootloaders.
+  # It's still possible to open the bootloader list by pressing any key
+  # It will just not appear on screen unless a key is pressed
+  boot.loader.timeout = 3;
+
+  boot = {
+
+    plymouth = {
+      enable = true;
+      theme = "bgrt";
+      #  themePackages = with pkgs; [
+      #    # By default we would install all themes
+      #    (adi1090x-plymouth-themes.override {
+      #      selected_themes = [ "" ];
+      #    })
+      #  ];
+
+    };
+
+    # Enable "Silent boot"
+    consoleLogLevel = 3;
+
+    initrd.verbose = false;
+
+    kernelParams = [
+      "quiet"
+      "splash"
+      "boot.shell_on_fail"
+      "udev.log_priority=3"
+      "rd.systemd.show_status=auto"
+    ];
+  };
+
+  boot.initrd.luks.devices = {
+    cryproot = {
+      device = "/dev/nvme0n1p2";
+      preLVM = true;
+    };
+  };
+
+  networking.hostName = "bacon"; # Define your hostname.
+  # Pick only one of the below networking options.
+  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+  networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
+
   # Set your time zone.
   time.timeZone = "America/Sao_Paulo";
 
@@ -42,7 +91,10 @@
 
   services.gnome.games.enable = false;
 
-  environment.gnome.excludePackages = with pkgs; [ gnome-tour ];
+  environment.gnome.excludePackages = with pkgs; [
+    gnome-tour
+    epiphany
+  ];
 
   # Configure keymap in X11
   # services.xserver.xkb.layout = "us";
@@ -54,10 +106,24 @@
   # Enable sound.
   # services.pulseaudio.enable = true;
   # OR
+  nixpkgs.config.packageOverrides = pkgs: {
+    intel-vaapi-driver = pkgs.intel-vaapi-driver.override { enableHybridCodec = true; };
+  };
 
-  hardware.graphics.enable = true;
-  hardware.graphics.enable32Bit = true;
-  hardware.bluetooth.enable = true;
+  hardware.graphics = {
+    # hardware.opengl until NixOS 24.05
+    enable = true;
+    enable32Bit = true;
+    extraPackages = with pkgs; [
+      intel-media-driver # LIBVA_DRIVER_NAME=iHD (for HD Graphics starting Broadwell (2014) and newer)
+      intel-vaapi-driver # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
+      libvdpau-va-gl
+    ];
+  };
+
+  environment.sessionVariables = {
+    LIBVA_DRIVER_NAME = "i965";
+  }; # Force intel-media-driver
 
   services.pipewire = {
     enable = true;
@@ -67,8 +133,20 @@
     jack.enable = true;
   };
 
+  hardware.bluetooth.enable = true;
+
   # Enable touchpad support (enabled default in most desktopManager).
   services.libinput.enable = true;
+
+  services.ollama = {
+    enable = true;
+    acceleration = "vulkan";
+  };
+
+  services.syncthing = {
+    enable = false;
+    openDefaultPorts = true; # Open ports in the firewall for Syncthing. (NOTE: this will not open syncthing gui port)
+  };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.joaov = {
@@ -91,6 +169,7 @@
   # programs.firefox.enable = true;
 
   programs.zsh.enable = true;
+
   services.blueman.enable = true;
 
   # List packages installed in system profile.
@@ -101,16 +180,21 @@
     xclip
     librewolf
     nixfmt-rfc-style
+    nixfmt-tree
     git
     bitwarden-desktop
-    mesa-vulkan-drivers
-    vulkan-tools
-    mesa
+    calibre
+    # android-tools
+    # scrcpy
+    # qtscrcpy
   ];
 
   security.auditd.enable = true;
 
-  security.apparmor.enable = false;
+  nix.package = pkgs.lix;
+  nix.extraOptions = ''
+    experimental-features = nix-command flakes
+  '';
 
   # specialisation.no-apparmor.configuration = {
   #  security.apparmor.enable = lib.mkForce false;
