@@ -4,34 +4,54 @@
   outputs =
     inputs@{
       self,
-      nixpkgs,
-      home-manager,
     }:
     let
-      inherit (self) outputs;
       system = "x86_64-linux";
-      lib = nixpkgs.lib;
-      overlay = import ./overlay { inherit inputs; };
-    in
-    {
-      nixosConfigurations.bacon = lib.nixosSystem {
-        inherit system;
+      lib = inputs.nixpkgs.lib;
 
-        modules = [
-          ./hosts/bacon
+      hosts = lib.attrNames (lib.filterAttrs (name: val: val == "directory") (builtins.readDir ./hosts));
 
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.extraSpecialArgs = {
-              inherit system;
-              inherit inputs;
-            };
-            home-manager.users.user = import ./hosts/bacon/home.nix;
-          }
+      nixpkgs-patched = (import inputs.nixpkgs-nightly { inherit system; }).applyPatches {
+        name = "nixpkgs-patched";
+        src = inputs.nixpkgs;
+        patches = [
+          #()
         ];
       };
+
+      pkgs = import nixpkgs-patched {
+        inherit system;
+        config = {
+          allowUnfree = true;
+          allowUnfreePredicate = (_: true);
+        };
+      };
+
+      pkgs-stable = import inputs.nixpkgs {
+        inherit system;
+        config = {
+          allowUnfree = true;
+          allowUnfreePredicate = (_: true);
+        };
+      };
+
+    in
+    {
+      nixosConfigurations = lib.genAttrs hosts (
+        host:
+        lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = [
+            ./hosts/${host}
+            ./modules/system
+            inputs.home-manager.nixosModules.home-manager
+            {
+              home-manager.extraSpecialArgs = { inherit pkgs pkgs-stable inputs; };
+            }
+          ];
+          specialArgs = { inherit pkgs-stable inputs; };
+        }
+      );
     };
 
   inputs = {
@@ -40,7 +60,7 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
 
     home-manager = {
-      url = "github:nix-community/home-manager";
+      url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
