@@ -53,8 +53,8 @@
 
   networking.firewall = {
     enable = true;
-    allowedTCPPorts = [ 3131 ];
-    allowedUDPPorts = [ 5353 ];
+    allowedTCPPorts = [ 1701 ];
+    allowedUDPPorts = [ 1701 ];
   };
 
   # Set your time zone.
