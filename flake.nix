@@ -2,67 +2,81 @@
   description = "Bacon Setup for personal use and fun";
 
   outputs =
-    inputs@{
-      self,
+    inputs@{ self
+    , ...
     }:
     let
+      inherit (self) outputs;
+
       system = "x86_64-linux";
+
       lib = inputs.nixpkgs.lib;
 
       hosts = lib.attrNames (lib.filterAttrs (name: val: val == "directory") (builtins.readDir ./hosts));
 
-      nixpkgs-patched = (import inputs.nixpkgs-nightly { inherit system; }).applyPatches {
+      overlays = [
+      ];
+
+      nixpkgs-patched = (import inputs.nixpkgs { inherit system; }).applyPatches {
         name = "nixpkgs-patched";
         src = inputs.nixpkgs;
-        patches = [
-          #()
-        ];
+        patches = [ ];
       };
 
       pkgs = import nixpkgs-patched {
         inherit system;
         config = {
-          allowUnfree = true;
-          allowUnfreePredicate = (_: true);
-        };
+	  allowUnfree = true;
+	  allowUnfreePredicate = (_: true);
+	};
+        overlays = overlays;
       };
 
-      pkgs-stable = import inputs.nixpkgs {
+      pkgs-stable = import inputs.nixpkgs-stable {
         inherit system;
         config = {
-          allowUnfree = true;
-          allowUnfreePredicate = (_: true);
-        };
+	  allowUnfree = true;
+	  allowUnfreePredicate = (_: true);
+	};
       };
 
     in
     {
+
       nixosConfigurations = lib.genAttrs hosts (
         host:
         lib.nixosSystem {
-          system = "x86_64-linux";
+          inherit system;
           modules = [
             ./hosts/${host}
             ./modules/system
             inputs.home-manager.nixosModules.home-manager
             {
-              home-manager.extraSpecialArgs = { inherit pkgs pkgs-stable inputs; };
+              home-manager.extraSpecialArgs = {
+                inherit pkgs;
+                inherit pkgs-stable;
+                inherit inputs;
+              };
             }
           ];
-          specialArgs = { inherit pkgs-stable inputs; };
+          specialArgs = {
+            inherit pkgs-stable;
+            inherit inputs;
+          };
         }
       );
+
+      formatter.${system} = pkgs.nixpkgs-fmt;
+
     };
 
   inputs = {
 
-    nixpkgs-nightly.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
+    nixpkgs.url = "nixpkgs/nixos-unstable";
+    nixpkgs-stable.url = "nixpkgs/nixos-25.11";
 
-    home-manager = {
-      url = "github:nix-community/home-manager/master";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    home-manager.url = "github:nix-community/home-manager/master";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
   };
 }

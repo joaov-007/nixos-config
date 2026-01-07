@@ -2,11 +2,10 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{
-  config,
-  lib,
-  pkgs,
-  ...
+{ config
+, lib
+, pkgs
+, ...
 }:
 
 {
@@ -14,10 +13,6 @@
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
   ];
-
-  # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
 
   # Hide the OS choice for bootloaders.
   # It's still possible to open the bootloader list by pressing any key
@@ -50,13 +45,6 @@
       "udev.log_priority=3"
       "rd.systemd.show_status=auto"
     ];
-  };
-
-  boot.initrd.luks.devices = {
-    cryproot = {
-      device = "/dev/nvme0n1p2";
-      preLVM = true;
-    };
   };
 
   networking.hostName = "bacon"; # Define your hostname.
