@@ -26,18 +26,18 @@
       pkgs = import nixpkgs-patched {
         inherit system;
         config = {
-	  allowUnfree = true;
-	  allowUnfreePredicate = (_: true);
-	};
+          allowUnfree = true;
+          allowUnfreePredicate = (_: true);
+        };
         overlays = overlays;
       };
 
       pkgs-stable = import inputs.nixpkgs-stable {
         inherit system;
         config = {
-	  allowUnfree = true;
-	  allowUnfreePredicate = (_: true);
-	};
+          allowUnfree = true;
+          allowUnfreePredicate = (_: true);
+        };
       };
 
     in
@@ -77,6 +77,8 @@
 
     home-manager.url = "github:nix-community/home-manager/master";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+
+    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
 
   };
 }
