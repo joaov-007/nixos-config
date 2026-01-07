@@ -1,7 +1,8 @@
-{ config
-, lib
-, pkgs
-, ...
+{
+  config,
+  lib,
+  pkgs,
+  ...
 }:
 
 {
@@ -59,27 +60,10 @@
   # Enable CUPS to print documents.
   # services.printing.enable = true;
 
-  # Enable sound.
-  # services.pulseaudio.enable = true;
-  # OR
-#  nixpkgs.config.packageOverrides = pkgs: {
-#    intel-vaapi-driver = pkgs.intel-vaapi-driver.override { enableHybridCodec = true; };
-#  };
-
   hardware.graphics = {
-    # hardware.opengl until NixOS 24.05
     enable = true;
     enable32Bit = true;
- #    extraPackages = with pkgs; [
- #      intel-media-driver # LIBVA_DRIVER_NAME=iHD (for HD Graphics starting Broadwell (2014) and newer)
- #      intel-vaapi-driver # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
- #      libvdpau-va-gl
- #    ];
   };
-
- #  environment.sessionVariables = {
- #    LIBVA_DRIVER_NAME = "i965";
- #  }; # Force intel-media-driver
 
   services.pipewire = {
     enable = true;
@@ -91,7 +75,6 @@
 
   hardware.bluetooth.enable = true;
 
-  # Enable touchpad support (enabled default in most desktopManager).
   services.libinput.enable = true;
 
   services.ollama = {
@@ -104,22 +87,13 @@
     openDefaultPorts = true; # Open ports in the firewall for Syncthing. (NOTE: this will not open syncthing gui port)
   };
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.joaov = {
-    isNormalUser = true;
-    home = "/home/joaov";
-    extraGroups = [
-      "wheel"
-      "input"
-      "video"
-      "networkmanager"
-      "systemd-journal"
-    ];
-    description = "Joao Victor";
-    packages = with pkgs; [
-      btop
-    ];
-    shell = pkgs.zsh;
+  dev.user.users = {
+    joaov = {
+      description = "Joao Victor (admin)";  
+      admin = true;
+      logAccess = true;
+      shell = pkgs.zsh;
+    };
   };
 
   # programs.firefox.enable = true;

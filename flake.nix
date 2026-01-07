@@ -2,8 +2,9 @@
   description = "Bacon Setup for personal use and fun";
 
   outputs =
-    inputs@{ self
-    , ...
+    inputs@{
+      self,
+      ...
     }:
     let
       inherit (self) outputs;
