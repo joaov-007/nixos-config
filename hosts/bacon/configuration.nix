@@ -177,7 +177,7 @@
     git
     bitwarden-desktop
     calibre
-    deskreen
+    weylus
     # android-tools
     # scrcpy
     # qtscrcpy
