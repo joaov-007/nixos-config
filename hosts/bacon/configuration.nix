@@ -53,8 +53,6 @@
 
   networking.firewall = {
     enable = true;
-    allowedTCPPorts = [ 1701 ];
-    allowedUDPPorts = [ 1701 ];
   };
 
   # Set your time zone.
@@ -177,7 +175,7 @@
     git
     bitwarden-desktop
     calibre
-    weylus
+    deskreen
     # android-tools
     # scrcpy
     # qtscrcpy
