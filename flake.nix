@@ -10,14 +10,14 @@
 
       system = "x86_64-linux";
 
-      lib = inputs.nixpkgs-unstable.lib;
+      lib = inputs.nixpkgs.lib;
 
       hosts = lib.attrNames (lib.filterAttrs (name: val: val == "directory") (builtins.readDir ./hosts));
 
       overlays = [
       ];
 
-      nixpkgs-patched = (import inputs.nixpkgs-unstable { inherit system; }).applyPatches {
+      nixpkgs-patched = (import inputs.nixpkgs { inherit system; }).applyPatches {
         name = "nixpkgs-patched";
         src = inputs.nixpkgs;
         patches = [ ];
@@ -38,6 +38,7 @@
           allowUnfree = true;
           allowUnfreePredicate = (_: true);
         };
+        overlays = overlays;
       };
 
     in
@@ -72,7 +73,7 @@
 
   inputs = {
 
-    nixpkgs-unstable.url = "nixpkgs/nixos-unstable";
+    nixpkgs.url = "nixpkgs/nixos-unstable";
     nixpkgs-stable.url = "nixpkgs/nixos-25.11";
 
     home-manager.url = "github:nix-community/home-manager/master";

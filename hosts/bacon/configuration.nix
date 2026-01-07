@@ -5,46 +5,40 @@
 }:
 
 {
-  #  imports = [
-  #    ./hardware-configuration.nix
-  #  ];
-
-  # enable systemd-boot
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  # Hide the OS choice for bootloaders.
-  # It's still possible to open the bootloader list by pressing any key
-  # It will just not appear on screen unless a key is pressed
-  boot.loader.timeout = 3;
+  dev.boot.plymouth.enable = true;
 
-  boot = {
-
-    plymouth = {
-      enable = true;
-      theme = "bgrt";
-      #  themePackages = with pkgs; [
-      #    # By default we would install all themes
-      #    (adi1090x-plymouth-themes.override {
-      #      selected_themes = [ "" ];
-      #    })
-      #  ];
-
-    };
-
-    # Enable "Silent boot"
-    consoleLogLevel = 3;
-
-    initrd.verbose = false;
-
-    kernelParams = [
-      "quiet"
-      "splash"
-      "boot.shell_on_fail"
-      "udev.log_priority=3"
-      "rd.systemd.show_status=auto"
-    ];
-  };
+#   boot = {
+# 
+#     loader.timeout = 0;
+# 
+#     plymouth = {
+#       enable = true;
+#       theme = "bgrt";
+#       #  themePackages = with pkgs; [
+#       #    # By default we would install all themes
+#       #    (adi1090x-plymouth-themes.override {
+#       #      selected_themes = [ "" ];
+#       #    })
+#       #  ];
+# 
+#     };
+# 
+#     # Enable "Silent boot"
+#     consoleLogLevel = 3;
+# 
+#     initrd.verbose = false;
+# 
+#     kernelParams = [
+#       "quiet"
+#       "splash"
+#       "boot.shell_on_fail"
+#       "udev.log_priority=3"
+#       "rd.systemd.show_status=auto"
+#     ];
+#   };
 
   networking.hostName = "bacon"; # Define your hostname.
   # Pick only one of the below networking options.
