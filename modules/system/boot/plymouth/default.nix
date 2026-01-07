@@ -8,6 +8,7 @@ in
       enable = lib.mkEnableOption "Toggle plymouth settings";
     };
   };
+
   config = lib.mkIf cfg.enable {
 
     boot = {

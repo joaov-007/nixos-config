@@ -5,51 +5,22 @@
 }:
 
 {
+  # set the hostname
+  networking.hostName = "bacon";
+
+  nixpkgs.config.allowUnfree = true;
+
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
   dev.boot.plymouth.enable = true;
 
-#   boot = {
-# 
-#     loader.timeout = 0;
-# 
-#     plymouth = {
-#       enable = true;
-#       theme = "bgrt";
-#       #  themePackages = with pkgs; [
-#       #    # By default we would install all themes
-#       #    (adi1090x-plymouth-themes.override {
-#       #      selected_themes = [ "" ];
-#       #    })
-#       #  ];
-# 
-#     };
-# 
-#     # Enable "Silent boot"
-#     consoleLogLevel = 3;
-# 
-#     initrd.verbose = false;
-# 
-#     kernelParams = [
-#       "quiet"
-#       "splash"
-#       "boot.shell_on_fail"
-#       "udev.log_priority=3"
-#       "rd.systemd.show_status=auto"
-#     ];
-#   };
-
-  networking.hostName = "bacon"; # Define your hostname.
-  # Pick only one of the below networking options.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-  networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
+  networking.networkmanager.enable = true;
 
   networking.firewall = {
     enable = true;
   };
 
-  # Set your time zone.
   time.timeZone = "America/Sao_Paulo";
 
   # Configure network proxy if necessary
@@ -91,24 +62,24 @@
   # Enable sound.
   # services.pulseaudio.enable = true;
   # OR
-  nixpkgs.config.packageOverrides = pkgs: {
-    intel-vaapi-driver = pkgs.intel-vaapi-driver.override { enableHybridCodec = true; };
-  };
+#  nixpkgs.config.packageOverrides = pkgs: {
+#    intel-vaapi-driver = pkgs.intel-vaapi-driver.override { enableHybridCodec = true; };
+#  };
 
   hardware.graphics = {
     # hardware.opengl until NixOS 24.05
     enable = true;
     enable32Bit = true;
-    extraPackages = with pkgs; [
-      intel-media-driver # LIBVA_DRIVER_NAME=iHD (for HD Graphics starting Broadwell (2014) and newer)
-      intel-vaapi-driver # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
-      libvdpau-va-gl
-    ];
+ #    extraPackages = with pkgs; [
+ #      intel-media-driver # LIBVA_DRIVER_NAME=iHD (for HD Graphics starting Broadwell (2014) and newer)
+ #      intel-vaapi-driver # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
+ #      libvdpau-va-gl
+ #    ];
   };
 
-  environment.sessionVariables = {
-    LIBVA_DRIVER_NAME = "i965";
-  }; # Force intel-media-driver
+ #  environment.sessionVariables = {
+ #    LIBVA_DRIVER_NAME = "i965";
+ #  }; # Force intel-media-driver
 
   services.pipewire = {
     enable = true;
@@ -157,8 +128,6 @@
 
   services.blueman.enable = true;
 
-  # List packages installed in system profile.
-  # You can use https://search.nixos.org/ to find more packages (and options).
   environment.systemPackages = with pkgs; [
     neovim
     wget
@@ -169,7 +138,6 @@
     git
     bitwarden-desktop
     calibre
-    wayvnc
     # android-tools
     # scrcpy
     # qtscrcpy
@@ -211,5 +179,5 @@
     enable = true;
   };
 
-  system.stateVersion = "25.05"; # Did you read the comment?
+  system.stateVersion = "25.05";
 }
