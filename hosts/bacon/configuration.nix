@@ -175,13 +175,14 @@
     git
     bitwarden-desktop
     calibre
-    deskreen
+    wayvnc
     # android-tools
     # scrcpy
     # qtscrcpy
   ];
 
   security = {
+    polkit.enable = true;
     auditd.enable = true;
     rtkit.enable = true;
   };
