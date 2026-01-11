@@ -22,6 +22,6 @@
   home.packages = with pkgs; [
   ];
 
-  programs.ssh.enable = lib.mkForce false;
+  programs.home-manager.enable = true;
   home.stateVersion = "25.05";
 }

@@ -6,27 +6,11 @@
 }:
 
 {
-  # set the hostname
-  networking.hostName = "bacon";
-
-  nixpkgs.config.allowUnfree = true;
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  dev.boot.plymouth.enable = true;
-
-  networking.networkmanager.enable = true;
-
-  networking.firewall = {
-    enable = true;
-  };
-
   time.timeZone = "America/Sao_Paulo";
-
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
@@ -40,14 +24,6 @@
     useXkbConfig = true; # use xkb.options in tty.
   };
 
-  # Enable the X11 windowing system.
-  # services.xserver.enable = true;
-
-  services.displayManager.gdm.enable = true;
-  services.desktopManager.gnome.enable = true;
-
-  services.gnome.games.enable = false;
-
   environment.gnome.excludePackages = with pkgs; [
     gnome-tour
     epiphany
@@ -60,39 +36,61 @@
   # Enable CUPS to print documents.
   # services.printing.enable = true;
 
-  hardware.graphics = {
-    enable = true;
-    enable32Bit = true;
+  nixpkgs.config.allowUnfree = true;
+
+  hardware = {
+    graphics = {
+      enable = true;
+      enable32Bit = true;
+    };
+    bluetooth.enable = true;
   };
 
-  services.pipewire = {
-    enable = true;
-    pulse.enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    jack.enable = true;
+  services = {
+
+    displayManager.gdm.enable = true;
+    desktopManager.gnome.enable = true;
+    gnome.games.enable = false;
+
+    libinput.enable = true;
+
+    ollama = {
+      enable = true;
+      package = pkgs.ollama-cpu;
+    };
+
+    pipewire = {
+      enable = true;
+      pulse.enable = true;
+      alsa.enable = true;
+      alsa.support32Bit = true;
+      jack.enable = true;
+    };
+
+    syncthing = {
+      enable = true;
+      openDefaultPorts = true; # Open ports in the firewall for Syncthing. (NOTE: this will not open syncthing gui port)
+    };
+
+    geoclue2 = {
+      enable = false;
+    };
+
+    fstrim = {
+      enable = true;
+    };
+
   };
 
-  hardware.bluetooth.enable = true;
-
-  services.libinput.enable = true;
-
-  services.ollama = {
-    enable = true;
-    package = pkgs.ollama-cpu;
-  };
-
-  services.syncthing = {
-    enable = false;
-    openDefaultPorts = true; # Open ports in the firewall for Syncthing. (NOTE: this will not open syncthing gui port)
-  };
-
-  dev.user.users = {
-    joaov = {
-      description = "Joao Victor (admin)";  
-      admin = true;
-      logAccess = true;
-      shell = pkgs.zsh;
+  dev = {
+    boot.plymouth.enable = true;
+    user.users = {
+      joaov = {
+        description = "Joao Victor";
+        admin = true;
+        logAccess = true;
+        shell = pkgs.zsh;
+      };
     };
   };
 
@@ -107,7 +105,6 @@
     wget
     xclip
     librewolf
-    nixfmt-rfc-style
     nixfmt-tree
     git
     bitwarden-desktop
@@ -144,14 +141,6 @@
 
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
-
-  services.geoclue2 = {
-    enable = lib.mkForce false;
-  };
-
-  services.fstrim = {
-    enable = true;
-  };
 
   system.stateVersion = "25.05";
 }

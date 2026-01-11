@@ -1,8 +1,14 @@
-{ config, inputs, ... }:
+{
+  config,
+  inputs,
+  pkgs,
+  ...
+}:
 {
   imports = [
     ./configuration.nix
     ./hardware-configuration.nix
+    ./networking.nix
 
     inputs.nixos-hardware.nixosModules.common-cpu-intel # Intel CPUs
 
