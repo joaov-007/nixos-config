@@ -1,15 +1,11 @@
-{
-  config,
-  pkgs,
-  lib,
-  ...
+{ config
+, pkgs
+, lib
+, ...
 }:
 
 {
-  # The username and home directory (must match system user)
-  home.username = "joaov";
   home.homeDirectory = "/home/joaov";
-
   programs.zsh.enable = true;
 
   # Set environment variables
@@ -22,6 +18,8 @@
   home.packages = with pkgs; [
   ];
 
+  services.syncthing.enable = true;
+
   programs.home-manager.enable = true;
-  home.stateVersion = "25.05";
+  home.stateVersion = "25.11";
 }

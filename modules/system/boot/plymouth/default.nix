@@ -13,7 +13,7 @@ in
 
     boot = {
 
-      loader.timeout = 0;
+      loader.timeout = 3;
 
       plymouth = {
         enable = true;

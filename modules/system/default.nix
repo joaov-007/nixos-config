@@ -6,9 +6,10 @@ let
   getDir =
     dir:
     if builtins.pathExists dir then
-      mapAttrs (file: type: if type == "directory" then getDir "${dir}/${file}" else type) (
-        builtins.readDir dir
-      )
+      mapAttrs (file: type: if type == "directory" then getDir "${dir}/${file}" else type)
+        (
+          builtins.readDir dir
+        )
     else
       { };
 
