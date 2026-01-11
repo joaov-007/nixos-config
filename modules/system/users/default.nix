@@ -1,8 +1,7 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
+{ config
+, lib
+, pkgs
+, ...
 }:
 
 let
@@ -22,6 +21,7 @@ let
 
   adminExtraGroups = [
     "wheel"
+    "systemd-journal"
   ];
 in
 {
@@ -37,11 +37,6 @@ in
             };
 
             admin = lib.mkOption {
-              type = lib.types.bool;
-              default = false;
-            };
-
-            logAccess = lib.mkOption {
               type = lib.types.bool;
               default = false;
             };
@@ -63,28 +58,18 @@ in
   };
 
   config = {
-    assertions = lib.mapAttrsToList (user: userCfg: {
-      assertion = !(userCfg.logAccess && !userCfg.admin);
-      message = "User '${user}': logAccess requires admin = true";
-    }) cfg.users;
 
-    users.users = lib.mapAttrs (user: userCfg: {
-      isNormalUser = true;
-      description = userCfg.description;
-      createHome = true;
-      shell = userCfg.shell;
+    users.users = lib.mapAttrs
+      (user: userCfg: {
+        isNormalUser = true;
+        description = userCfg.description;
+        createHome = true;
+        shell = userCfg.shell;
 
-      extraGroups =
-        baseUserGroups
-        ++ lib.optionals userCfg.admin adminExtraGroups
-        ++ lib.optionals userCfg.logAccess [ "systemd-journal" ];
-    }) cfg.users;
-
-    home-manager.users = lib.genAttrs (lib.attrNames cfg.users) (user: {
-      home.username = user;
-      home.homeDirectory = "/home/${user}";
-      home.stateVersion = "24.05";
-    });
-
+        extraGroups =
+          baseUserGroups
+          ++ lib.optionals userCfg.admin adminExtraGroups;
+      })
+      cfg.users;
   };
 }

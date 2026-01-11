@@ -2,9 +2,8 @@
   description = "Bacon Setup for personal use and fun";
 
   outputs =
-    inputs@{
-      self,
-      ...
+    inputs@{ self
+    , ...
     }:
     let
       inherit (self) outputs;
@@ -59,6 +58,9 @@
                 inherit pkgs-stable;
                 inherit inputs;
               };
+              home-manager.backupFileExtension = "bak";
+              home-manager.useUserPackages = true;
+              home-manager.useGlobalPkgs = true;
             }
           ];
           specialArgs = {

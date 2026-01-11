@@ -1,8 +1,7 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
+{ config
+, lib
+, pkgs
+, ...
 }:
 
 {
@@ -88,7 +87,6 @@
       joaov = {
         description = "Joao Victor";
         admin = true;
-        logAccess = true;
         shell = pkgs.zsh;
       };
     };
