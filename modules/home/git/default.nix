@@ -3,11 +3,9 @@
   lib,
   pkgs,
   ...
-}:
-let
-  cfg = dev.home.git;
-in
-{
-  options.dev.home.git = { };
-  config = { };
+}: let
+  cfg = config.dev.home.git;
+in {
+  options.dev.home.git = {};
+  config = {};
 }

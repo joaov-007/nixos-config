@@ -1,16 +1,15 @@
-{ config
-, pkgs
-, lib
-, ...
-}:
-
 {
-  home.homeDirectory = "/home/joaov";
+  config,
+  pkgs,
+  lib,
+  ...
+}: {
   programs.zsh.enable = true;
 
   # Set environment variables
   home.sessionVariables = {
     EDITOR = "nvim";
+    VISUAL = "nvim";
     SHELL = pkgs.zsh;
   };
 

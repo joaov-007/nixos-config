@@ -1,20 +1,8 @@
-{ inputs, ... }:
-{
-
-  # When applied, the stable nixpkgs set (declared in the flake inputs) will
-  # be accessible through 'pkgs.stable'
-  stable-packages = final: prev: {
-    stable = import inputs.nixpkgs-stable {
-      system = final.system;
-      config.allowUnfree = true;
-    };
-  };
-
-  unstable-packages = final: prev: {
-    unstable = import inputs.nixpkgs {
-      system = final.system;
-      config.allowUnfree = true;
-    };
-  };
-
-}
+{lib}: let
+  files = lib.pipe ./. [
+    builtins.readDir
+    (lib.filterAttrs (n: t: t == "regular" && n != "default.nix" && lib.hasSuffix ".nix" n))
+    builtins.attrNames
+  ];
+in
+  lib.genAttrs files (file: import (./. + "/${file}"))
