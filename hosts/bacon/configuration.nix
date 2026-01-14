@@ -114,6 +114,7 @@
     pika-backup
     age
     sops
+    otpclient
     # android-tools
     # scrcpy
     # qtscrcpy
