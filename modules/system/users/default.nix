@@ -1,10 +1,9 @@
-{ config
-, lib
-, pkgs
-, ...
-}:
-
-let
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
   cfg = config.dev.user;
 
   baseUserGroups = [
@@ -23,13 +22,11 @@ let
     "wheel"
     "systemd-journal"
   ];
-in
-{
+in {
   options.dev.user.users = lib.mkOption {
     type = lib.types.attrsOf (
       lib.types.submodule (
-        { name, ... }:
-        {
+        {name, ...}: {
           options = {
             description = lib.mkOption {
               type = lib.types.str;
@@ -54,21 +51,18 @@ in
         }
       )
     );
-    default = { };
+    default = {};
   };
 
   config = {
-
-    users.users = lib.mapAttrs
-      (user: userCfg: {
+    users.users =
+      lib.mapAttrs (user: userCfg: {
         isNormalUser = true;
         description = userCfg.description;
         createHome = true;
         shell = userCfg.shell;
 
-        extraGroups =
-          baseUserGroups
-          ++ lib.optionals userCfg.admin adminExtraGroups;
+        extraGroups = baseUserGroups ++ lib.optionals userCfg.admin adminExtraGroups;
       })
       cfg.users;
   };

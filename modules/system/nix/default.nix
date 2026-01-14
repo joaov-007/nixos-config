@@ -1,7 +1,8 @@
-{ config, pkgs, ... }:
-let
-in
 {
+  config,
+  pkgs,
+  ...
+}: {
   config = {
     nix = {
       package = pkgs.lix;
@@ -16,11 +17,14 @@ in
           "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
           "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
         ];
-        trusted-users = config.systemSettings.adminUsers ++ [ "@wheel" ];
+        trusted-users = ["@wheel"];
         auto-optimise-store = true;
-        download-buffer-size = 500000000;
       };
+      extraOptions = ''
+        experimental-features = nix-command flakes
+      '';
     };
+
     programs.nix-ld = {
       enable = true;
       #Include libstdc++ in the nix-ld profile

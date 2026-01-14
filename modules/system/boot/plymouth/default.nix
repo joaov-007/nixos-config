@@ -1,8 +1,10 @@
-{ config, lib, ... }:
-let
-  cfg = config.dev.boot.plymouth;
-in
 {
+  config,
+  lib,
+  ...
+}: let
+  cfg = config.dev.boot.plymouth;
+in {
   options = {
     dev.boot.plymouth = {
       enable = lib.mkEnableOption "Toggle plymouth settings";
@@ -10,9 +12,7 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-
     boot = {
-
       loader.timeout = 3;
 
       plymouth = {
@@ -24,7 +24,6 @@ in
         #      selected_themes = [ "" ];
         #    })
         #  ];
-
       };
 
       # Enable "Silent boot"
@@ -40,6 +39,5 @@ in
         "rd.systemd.show_status=auto"
       ];
     };
-
   };
 }

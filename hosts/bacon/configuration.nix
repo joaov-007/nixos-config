@@ -17,9 +17,12 @@
     "pt_BR.UTF-8/UTF-8"
   ];
 
+  services.xserver.xkb = {
+    layout = "us";
+    variant = "altgr-intl";
+  };
+
   console = {
-    font = "Lat2-Terminus16";
-    keyMap = lib.mkForce "us";
     useXkbConfig = true; # use xkb.options in tty.
   };
 
@@ -27,10 +30,6 @@
     gnome-tour
     epiphany
   ];
-
-  # Configure keymap in X11
-  # services.xserver.xkb.layout = "us";
-  # services.xserver.xkb.options = "eurosign:e,caps:escape";
 
   # Enable CUPS to print documents.
   # services.printing.enable = true;
@@ -46,7 +45,6 @@
   };
 
   services = {
-
     displayManager.gdm.enable = true;
     desktopManager.gnome.enable = true;
     gnome.games.enable = false;
@@ -60,6 +58,7 @@
 
     pipewire = {
       enable = true;
+      wireplumber.enable = true;
       pulse.enable = true;
       alsa.enable = true;
       alsa.support32Bit = true;
@@ -78,7 +77,6 @@
     fstrim = {
       enable = true;
     };
-
   };
 
   dev = {
@@ -95,6 +93,7 @@
   # programs.firefox.enable = true;
 
   programs.zsh.enable = true;
+  programs.nix-index-database.comma.enable = true;
 
   services.blueman.enable = true;
 
@@ -105,8 +104,16 @@
     librewolf
     nixfmt-tree
     git
+    btop
     bitwarden-desktop
+    bitwarden-cli
+    jq
     calibre
+    rclone
+    borgbackup
+    pika-backup
+    age
+    sops
     # android-tools
     # scrcpy
     # qtscrcpy
@@ -117,11 +124,6 @@
     auditd.enable = true;
     rtkit.enable = true;
   };
-
-  nix.package = pkgs.lix;
-  nix.extraOptions = ''
-    experimental-features = nix-command flakes
-  '';
 
   # specialisation.no-apparmor.configuration = {
   #  security.apparmor.enable = lib.mkForce false;
@@ -135,10 +137,6 @@
   #   enableSSHSupport = true;
   # };
 
-  # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
-
-  system.stateVersion = "25.05";
+  system.autoUpgrade.enable = true;
+  services.openssh.enable = lib.mkForce false;
 }
