@@ -1,13 +1,13 @@
-{ config
-, lib
-, pkgs
-, ...
-}:
-
 {
-
+  config,
+  lib,
+  pkgs,
+  inputs,
+  ...
+}: {
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.systemd-boot.configurationLimit = 12;
 
   time.timeZone = "America/Sao_Paulo";
 
