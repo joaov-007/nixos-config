@@ -17,6 +17,8 @@
   home.packages = with pkgs; [
   ];
 
+  services.ssh-agent.enable = true;
+
   services.syncthing.enable = true;
 
   programs.home-manager.enable = true;
