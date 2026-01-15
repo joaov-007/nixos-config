@@ -5,6 +5,7 @@
   inputs,
   ...
 }: {
+
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.systemd-boot.configurationLimit = 12;
@@ -13,8 +14,9 @@
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
-  i18n.extraLocales = [
+  i18n.supportedLocales = [
     "pt_BR.UTF-8/UTF-8"
+    "en_US.UTF-8/UTF-8"
   ];
 
   services.xserver.xkb = {
@@ -45,8 +47,11 @@
   };
 
   services = {
+
     displayManager.gdm.enable = true;
+    displayManager.gdm.wayland = true;
     desktopManager.gnome.enable = true;
+
     gnome.games.enable = false;
 
     libinput.enable = true;
@@ -73,6 +78,8 @@
       enable = true;
     };
   };
+
+  #TODO: I think can make better the user.user
 
   dev = {
     boot.plymouth.enable = true;
