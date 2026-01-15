@@ -37,11 +37,6 @@
     };
   };
 
-  networking.hostName = "bacon"; # Define your hostname.
-  # Pick only one of the below networking options.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-  networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
-
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/583fbea2-aa10-401d-a4a4-46628f4ff199";
     fsType = "ext4";
@@ -50,7 +45,6 @@
   fileSystems."/boot" = {
     device = "/dev/disk/by-uuid/9BB2-04AC";
     fsType = "vfat";
-    # options = [ "fmask=0022" "dmask=0022" ];
   };
 
   fileSystems."/tmp" = {
@@ -65,6 +59,9 @@
   swapDevices = [
     {device = "/dev/disk/by-uuid/d11e162d-605f-4490-a335-850f127ca2a6";}
   ];
+
+ boot.resumeDevice = "/dev/disk/by-uuid/d11e162d-605f-4490-a335-850f127ca2a6";
+ powerManagement.enable = true;
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
