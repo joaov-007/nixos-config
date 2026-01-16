@@ -5,7 +5,6 @@
   inputs,
   ...
 }: {
-
   time.timeZone = "America/Sao_Paulo";
 
   # Select internationalisation properties.
@@ -77,9 +76,9 @@
   #TODO: I think can make better the user.user
 
   dev = {
-
     boot.plymouth.enable = true;
     boot.systemd-boot.enable = true;
+    system.updates.enable = true;
 
     user.users = {
       joaov = {
@@ -123,14 +122,6 @@
     polkit.enable = true;
     auditd.enable = true;
     rtkit.enable = true;
-  };
-
-  system.autoUpgrade = {
-    enable = true;
-    flake = inputs.self.outPath;
-    flags = [
-      "-L" # print build logs
-    ];
   };
 
   # specialisation.no-apparmor.configuration = {
