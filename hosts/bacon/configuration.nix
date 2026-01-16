@@ -5,9 +5,6 @@
   inputs,
   ...
 }: {
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.systemd-boot.configurationLimit = 12;
 
   time.timeZone = "America/Sao_Paulo";
 
@@ -80,7 +77,10 @@
   #TODO: I think can make better the user.user
 
   dev = {
+
     boot.plymouth.enable = true;
+    boot.systemd-boot.enable = true;
+
     user.users = {
       joaov = {
         description = "Joao Victor";
