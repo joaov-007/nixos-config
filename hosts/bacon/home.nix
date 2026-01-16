@@ -4,11 +4,6 @@
   lib,
   ...
 }: {
-  programs.zsh.enable = true;
-  programs.zsh.dotDir = "${config.xdg.configHome}/zsh";
-
-  xdg.enable = true;
-  xdg.userDirs.createDirectories = true;
 
   # Set environment variables
   home.sessionVariables = {
@@ -27,8 +22,15 @@
     enableZshIntegration = true;
   };
 
+  programs.zsh.enable = true;
+  programs.zsh.dotDir = "${config.xdg.configHome}/zsh";
   services.syncthing.enable = true;
 
+  xdg.enable = true;
+  xdg.userDirs.createDirectories = true;
+
   programs.home-manager.enable = true;
+  programs.zoxide.enable = true;
+
   home.stateVersion = "25.11";
 }
