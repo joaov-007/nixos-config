@@ -5,7 +5,6 @@
   inputs,
   ...
 }: {
-
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.systemd-boot.configurationLimit = 12;
@@ -21,7 +20,7 @@
 
   services.xserver.xkb = {
     layout = "us";
-    variant = "altgr-intl";
+    variant = "intl-unicode";
   };
 
   console = {
@@ -47,7 +46,6 @@
   };
 
   services = {
-
     displayManager.gdm.enable = true;
     displayManager.gdm.wayland = true;
     desktopManager.gnome.enable = true;
@@ -106,7 +104,6 @@
     librewolf
     nixfmt-tree
     git
-    btop
     bitwarden-desktop
     bitwarden-cli
     jq
@@ -128,6 +125,14 @@
     rtkit.enable = true;
   };
 
+  system.autoUpgrade = {
+    enable = true;
+    flake = inputs.self.outPath;
+    flags = [
+      "-L" # print build logs
+    ];
+  };
+
   # specialisation.no-apparmor.configuration = {
   #  security.apparmor.enable = lib.mkForce false;
   # };
@@ -140,6 +145,5 @@
   #   enableSSHSupport = true;
   # };
 
-  system.autoUpgrade.enable = true;
   services.openssh.enable = lib.mkForce false;
 }

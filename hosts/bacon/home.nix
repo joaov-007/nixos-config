@@ -5,6 +5,10 @@
   ...
 }: {
   programs.zsh.enable = true;
+  programs.zsh.dotDir = "${config.xdg.configHome}/zsh";
+
+  xdg.enable = true;
+  xdg.userDirs.createDirectories = true;
 
   # Set environment variables
   home.sessionVariables = {
@@ -15,9 +19,13 @@
 
   # User packages
   home.packages = with pkgs; [
+    btop
   ];
 
-  services.ssh-agent.enable = true;
+  services.ssh-agent = {
+    enable = true;
+    enableZshIntegration = true;
+  };
 
   services.syncthing.enable = true;
 
