@@ -1,14 +1,13 @@
-{ lib, config, pkgs, ... }:
-
-let
-  cfg = config.dev.boot.systemd-boot;
-in
 {
+  lib,
+  config,
+  pkgs,
+  ...
+}: let
+  cfg = config.dev.boot.systemd-boot;
+in {
   options = {
-    dev.boot.systemd-boot.enable = lib.mkEnableOption {
-      description = "Toggle systemd-boot settings";
-      default = false;
-    };
+    dev.boot.systemd-boot.enable = lib.mkEnableOption "Enable systemd-boot";
 
     dev.boot.systemd-boot.configurationLimit = lib.mkOption {
       type = lib.types.int;
@@ -24,4 +23,3 @@ in
     boot.initrd.systemd.enable = true;
   };
 }
-
