@@ -6,6 +6,11 @@
   config = {
     nix = {
       package = pkgs.lix;
+      gc = {
+        automatic = true;
+        dates = "weekly";
+        options = "--delete-older-than 30d";
+      };
       settings = {
         substituters = [
           "https://cache.nixos.org"

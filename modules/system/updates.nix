@@ -12,7 +12,6 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-
     system.autoUpgrade = {
       enable = true;
       flake = inputs.self.outPath;
@@ -20,6 +19,5 @@ in {
         "-L" # print build logs
       ];
     };
-
   };
 }

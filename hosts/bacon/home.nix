@@ -4,7 +4,6 @@
   lib,
   ...
 }: {
-
   # Set environment variables
   home.sessionVariables = {
     EDITOR = "nvim";
@@ -24,13 +23,18 @@
 
   programs.zsh.enable = true;
   programs.zsh.dotDir = "${config.xdg.configHome}/zsh";
+
   services.syncthing.enable = true;
 
   xdg.enable = true;
   xdg.userDirs.createDirectories = true;
 
-  programs.home-manager.enable = true;
-  programs.zoxide.enable = true;
+  programs.zoxide = {
+    enable = true;
+    enableZshIntegration = true;
+    enableBashIntegration = true;
+  };
 
+  programs.home-manager.enable = true;
   home.stateVersion = "25.11";
 }
