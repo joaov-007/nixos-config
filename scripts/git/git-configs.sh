@@ -1,4 +1,4 @@
-#!/usr/bin/env bash # git shell one day maybey I dont now is necessery
+#!/usr/bin/env bash
 
 setgit() {
     while (( "$#" )); do
