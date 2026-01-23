@@ -235,6 +235,7 @@
     otpclient
     e2fsprogs
     trash-cli
+    motrix
     # android-tools
     # scrcpy
     # qtscrcpy
