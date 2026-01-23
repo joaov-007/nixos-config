@@ -35,6 +35,82 @@
     variant = "intl";
   };
 
+  fonts = {
+    enableDefaultPackages = true;
+    fontDir.enable = true;
+
+    packages = with pkgs; [
+      # ===== Common / System =====
+      dejavu_fonts
+      liberation_ttf
+      noto-fonts
+      noto-fonts-color-emoji
+      freefont_ttf
+
+      # Microsoft-compatible (opcional, mas comum)
+      corefonts
+      vista-fonts
+
+      # ===== UI / Web populares =====
+      inter
+      roboto
+      ubuntu-classic
+      source-sans
+      source-serif
+
+      # ===== Programming fonts =====
+      jetbrains-mono
+      fira-code
+      source-code-pro
+      hack-font
+      cascadia-code
+      meslo-lgs-nf
+    ];
+
+    fontconfig = {
+      enable = true;
+
+      defaultFonts = {
+        serif = [
+          "Times New Roman"
+          "Liberation Serif"
+          "Noto Serif"
+          "DejaVu Serif"
+        ];
+
+        sansSerif = [
+          "Segoe UI"
+          "Inter"
+          "Roboto"
+          "Ubuntu"
+          "Arial"
+          "Liberation Sans"
+          "Noto Sans"
+          "DejaVu Sans"
+        ];
+
+        monospace = [
+          "JetBrainsMono Nerd Font"
+          "FiraCode Nerd Font"
+          "CascadiaCode Nerd Font"
+          "Hack Nerd Font"
+
+          "JetBrains Mono"
+          "Fira Code"
+          "Cascadia Code"
+          "Source Code Pro"
+          "DejaVu Sans Mono"
+        ];
+
+        emoji = [
+          "Noto Color Emoji"
+          "Apple Color Emoji"
+          "Segoe UI Emoji"
+        ];
+      };
+    };
+  };
+
   environment.persistence."/persist" = {
     # Hide these mount from the sidebar of file managers
     hideMounts = true;
