@@ -32,7 +32,7 @@
 
   services.xserver.xkb = {
     layout = "us";
-    variant = "intl-unicode";
+    variant = "intl";
   };
 
   environment.persistence."/persist" = {
