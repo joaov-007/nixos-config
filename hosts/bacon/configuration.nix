@@ -238,6 +238,7 @@
     trash-cli
     motrix
     gromit-mpx
+    brightnessctl
     # android-tools
     # scrcpy
     # qtscrcpy
