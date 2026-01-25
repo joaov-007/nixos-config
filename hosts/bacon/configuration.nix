@@ -199,6 +199,7 @@
     boot.plymouth.enable = false;
     boot.systemd-boot.enable = true;
     system.updates.enable = true;
+    system.services.tor.enable = true;
 
     user.users = {
       joaov = {
