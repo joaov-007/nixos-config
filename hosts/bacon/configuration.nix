@@ -237,6 +237,7 @@
     e2fsprogs
     trash-cli
     motrix
+    gromit-mpx
     # android-tools
     # scrcpy
     # qtscrcpy
