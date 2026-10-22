@@ -1,5 +1,16 @@
 # Bacon Configs
 
+> **Repositório movido.** Em 2026-10-22 este projeto foi mesclado no
+> repositório [`joaov-007/.dotfiles`](https://github.com/joaov-007/.dotfiles),
+> no diretório `nixos/`. O histórico completo foi preservado em um merge
+> linear — os commits originais continuam acessíveis por
+> `git log nixos/` no repositório novo.
+>
+> A configuração NixOS passou a ser mantida em:
+> `https://github.com/joaov-007/.dotfiles/tree/dev/nixos`
+>
+> Este repositório está arquivado e não recebe mais atualizações.
+
 Configuração NixOS do meu laptop (host `bacon`), gerenciada como um flake
 usando o padrão **dendritic** ([flake-parts](https://flake.parts) +
 [import-tree](https://github.com/denful/import-tree)): cada arquivo `.nix`
